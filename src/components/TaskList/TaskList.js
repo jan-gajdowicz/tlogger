@@ -1,31 +1,27 @@
 import React, { Component } from 'react';
 import TaskItem from '../TaskItem/TaskItem';
-import { connect } from 'react-redux'
-import { createTask, requestTasks } from '../../actions'
 import TaskCreator from '../TaskCreator/TaskCreator';
+import { connect } from 'react-redux'
+import { requestTasks } from '../../actions'
 import './TaskList.css';
 
 const mapStateToProps = state => {
     return {
-      tasks: state.requestTasks.tasks,
-      isPending: state.requestTasks.isPending,
-      error: state.requestTasks.error
+        tasks: state.tasks.tasks,
+        isPending: state.tasks.isPending,
+        error: state.tasks.error
     }
-  }
+}
   
-  const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = dispatch => {
     return {
-      onCreateTask: event => dispatch(createTask(event.target.value)),
-      onRequestTasks: () => dispatch(requestTasks())
+        onRequestTasks: () => dispatch(requestTasks())
     }
-  }
+}
 
 class TaskList extends Component {
     async componentDidMount() {
         await this.props.onRequestTasks()
-    }
-    createTask() {
-        this.props.createTask()
     }
     render() {
         return (

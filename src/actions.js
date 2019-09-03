@@ -1,4 +1,5 @@
 import { 
+    API_URL, 
     CREATE_TASK, 
     REQUEST_TASKS_PENDING,
     REQUEST_TASKS_SUCCESS,
@@ -12,7 +13,7 @@ export const createTask = (task) => ({
 
 export const requestTasks = () => async dispatch => {
     dispatch({ type: REQUEST_TASKS_PENDING })
-    await fetch('https://5d6e4e17777f670014036633.mockapi.io/tasks')
+    await fetch(API_URL)
         .then(response => response.json())
         .then(data => dispatch({ type: REQUEST_TASKS_SUCCESS, payload: data }))
         .catch(error => dispatch({ type: REQUEST_TASKS_FAILED, payload: error })) 
