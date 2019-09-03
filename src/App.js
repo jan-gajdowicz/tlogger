@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import TaskList from './components/TaskList/TaskList';
 import './App.css';
+import { createTask, requestTasks } from './actions'
+
+
 
 class App extends Component {
   render() {
     return (
-      <TaskList />
+      <TaskList/>
     );
   }
 }
 
-export default App;
+export default App; //higher order component
