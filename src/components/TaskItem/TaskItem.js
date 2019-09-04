@@ -16,7 +16,7 @@ class TaskItem extends Component {
     deleteTask = () => {
         this.props.deleteTask(this.props.item.taskID)
     }
-    updateTask = () => {
+    updateTask = (event) => {
         this.props.updateTask(this.state)
     }
     editTask = (event) => {
@@ -40,13 +40,22 @@ class TaskItem extends Component {
         <div className="task-item">
             <div className="task-name">
                 <input value={this.state.taskName}
+                    className="task-field" 
                     name="taskName"  
                     type="text" 
                     onChange={this.editTask}
                     onBlur={this.updateTask}
                 />
             </div>
-            <div className="task-time">{this.state.taskTimeFormatted}</div>   
+            <div className="task-time">
+                <input value={this.state.taskTimeFormatted}
+                    className="task-field" 
+                    name="taskTimeFormatted"  
+                    type="text" 
+                    onChange={this.editTask}
+                    onBlur={this.updateTask}
+                />
+            </div>   
             <div className="task-utils">
                 <div className="button-delete" onClick={this.deleteTask}>
                     <img alt="delete task" className="button-icon" src="assets/rubbish-bin-delete-button.svg"/>

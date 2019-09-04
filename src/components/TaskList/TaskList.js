@@ -21,7 +21,7 @@ const mapDispatchToProps = dispatch => {
 
 class TaskList extends Component {
     async componentDidMount() {
-        await this.props.onRequestTasks()
+        //await this.props.onRequestTasks()
     }
     render() {
         return (

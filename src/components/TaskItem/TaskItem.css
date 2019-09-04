@@ -12,11 +12,21 @@
 }
 .task-name {
     width: 70%;
-    padding: 5px;
+}
+.task-field {
+    width: 90%;
+    border-radius: 2px;
+    border: 1px solid transparent;
+    color: #777;
+    padding: 8px;
+    font-size: 16px;
+}
+.task-field:focus {
+    border: 1px solid #ccc;
+    outline: none;
 }
 .task-time {
     width: 15%;
-    padding: 5px;
 }
 .task-utils {
     width: 15%;
@@ -25,7 +35,7 @@
 }
 .button-delete {
     height: 16px;
-    padding: 5px;
+    padding: 8px;
     border-radius: 2px; 
     border: 1px solid transparent; 
     width: 16px;
@@ -39,5 +49,6 @@
 .button-delete .button-icon {
     height: 16px;
     width: 16px;
+    top: -2px;
     position: relative;
 }
