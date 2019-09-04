@@ -1,5 +1,6 @@
 import { 
     CREATE_TASK, 
+    DELETE_TASK, 
     REQUEST_TASKS_PENDING,
     REQUEST_TASKS_SUCCESS,
     REQUEST_TASKS_FAILED 
@@ -15,6 +16,11 @@ export const tasks = (state = initialState, action = {}) => {
     switch(action.type) {
         case CREATE_TASK:
             return {...state, tasks: [...state.tasks, action.payload]}
+        case DELETE_TASK:
+            return {...state, tasks: state.tasks.filter(task => {
+                console.log('task', task);
+                return task.taskID != action.payload}
+            )}
         case REQUEST_TASKS_PENDING: 
             return {...state, isPending: true }
         case REQUEST_TASKS_SUCCESS: 

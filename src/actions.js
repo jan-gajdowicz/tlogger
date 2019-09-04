@@ -1,6 +1,7 @@
 import { 
     API_URL, 
     CREATE_TASK, 
+    DELETE_TASK, 
     REQUEST_TASKS_PENDING,
     REQUEST_TASKS_SUCCESS,
     REQUEST_TASKS_FAILED 
@@ -8,6 +9,11 @@ import {
 
 export const createTask = (task) => ({
     type: CREATE_TASK,
+    payload: task
+})
+
+export const deleteTask = (task) => ({
+    type: DELETE_TASK,
     payload: task
 })
 
