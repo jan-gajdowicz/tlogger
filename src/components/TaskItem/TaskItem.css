@@ -11,7 +11,7 @@
     margin-top: 0;
 }
 .task-name {
-    width: 70%;
+    width: 50%;
 }
 .task-field {
     width: 90%;
@@ -28,8 +28,11 @@
 .task-time {
     width: 15%;
 }
-.task-utils {
+.task-creation-time {
     width: 15%;
+}
+.task-utils {
+    width: 20%;
     display: flex;
     justify-content: flex-end;
 }

@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { createTask } from '../../actions'
 import { formatTime } from '../../functions'
 import './TaskCreator.css'
+import moment from 'moment'
   
 class TaskCreator extends Component {
     constructor(props) {
@@ -10,6 +11,7 @@ class TaskCreator extends Component {
         this.state = {
             taskID: null,
             taskName: '',
+            taskCreationTime: null,
             taskTimeInMs: '',
             taskTimeFormatted: '',
             timerTime: 0,
@@ -40,7 +42,8 @@ class TaskCreator extends Component {
         }
         const timeFormatted = formatTime(this.state.taskTimeInMs)
         this.props.createTask({
-            taskID: Date.now(),
+            taskID: `task_${moment()}`,
+            taskCreationTime: moment(),
             taskName: this.state.taskName,
             taskTimeInMs: this.state.taskTimeInMs,
             taskTimeFormatted: timeFormatted

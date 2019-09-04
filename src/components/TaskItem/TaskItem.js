@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './TaskItem.css';
 import { connect } from 'react-redux'
 import { deleteTask, updateTask } from '../../actions'
+import moment from 'moment'
 
 class TaskItem extends Component {
     constructor(props) {
@@ -10,6 +11,7 @@ class TaskItem extends Component {
             taskID: null,
             taskName: '',
             taskTimeFormatted: '',
+            taskCreationTime: '',
         }
     }
     //proptypes!!!
@@ -32,6 +34,7 @@ class TaskItem extends Component {
         this.setState({
             taskID: this.props.item.taskID,
             taskName: this.props.item.taskName,
+            taskCreationTime: moment(this.props.item.taskCreationTime).format('DD-MM-YYYY'),
             taskTimeFormatted: this.props.item.taskTimeFormatted,
         })
     }
@@ -47,6 +50,15 @@ class TaskItem extends Component {
                     onBlur={this.updateTask}
                 />
             </div>
+            <div className="task-creation-time">
+                <input value={this.state.taskCreationTime}
+                    className="task-field" 
+                    name="taskCreationTime"  
+                    type="text" 
+                    onChange={this.editTask}
+                    onBlur={this.updateTask}
+                />
+            </div>   
             <div className="task-time">
                 <input value={this.state.taskTimeFormatted}
                     className="task-field" 
