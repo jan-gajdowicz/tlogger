@@ -4,12 +4,6 @@ import { createTask } from '../../actions'
 import { formatTime } from '../../functions'
 import './TaskCreator.css'
   
-const mapDispatchToProps = dispatch => {
-    return {
-        createTask: (state) => dispatch(createTask(state)),
-    }
-}
-
 class TaskCreator extends Component {
     constructor(props) {
         super(props)
@@ -23,11 +17,8 @@ class TaskCreator extends Component {
             timerFired: false,
             creatorStateClass: ''
         }
-        this.createTask = this.createTask.bind(this)
-        this.trackTime = this.trackTime.bind(this)
-        this.handleInputChange = this.handleInputChange.bind(this)
     }
-    handleInputChange(event) {
+    handleInputChange = (event) => {
         event.persist()
         const target = event.target
         const value = target.value
@@ -41,7 +32,7 @@ class TaskCreator extends Component {
             [name]: value
         });
     }
-    createTask() {
+    createTask = () => {
         this.setState({creatorStateClass: ''})
         if(this.state.taskName === '' || this.state.taskTime === '') {
             this.setState({creatorStateClass: 'shake'})
@@ -61,7 +52,7 @@ class TaskCreator extends Component {
             timerTime: 0
         })
     }
-    trackTime() {
+    trackTime = () => {
         if(this.state.timerFired) {
             clearInterval(this.state.timerInterval)
             this.setState({
@@ -90,16 +81,16 @@ class TaskCreator extends Component {
         if(isTimerFired) {
             trackingButtonContent = 
                 <span className="button-inner">
-                    <img className="button-icon" src="assets/pause-button.svg"></img>Pause
+                    <img alt="pause" className="button-icon" src="assets/pause-button.svg"></img>Pause
                 </span>
         } else {
             trackingButtonContent = 
                 <span className="button-inner">
-                    <img className="button-icon" src="assets/play-arrow.svg"></img>Track
+                    <img alt="track" className="button-icon" src="assets/play-arrow.svg"></img>Track
                 </span>
         }
         return (
-        <div className={`task-creator ${this.state.creatorStateClass}`}>
+            <div className={`task-creator ${this.state.creatorStateClass}`}>
             <div>
                 <input value={this.state.taskName} 
                     type="text" 
@@ -107,7 +98,7 @@ class TaskCreator extends Component {
                     className="creator-input"
                     placeholder="Task Name"
                     onChange={this.handleInputChange}
-                />
+                    />
             </div>
             <div>
                 <input value={this.state.taskTimeFormatted}
@@ -123,11 +114,17 @@ class TaskCreator extends Component {
             </button>   
             <button onClick={this.createTask} className="creator-button button-main">
                 <span className="button-inner">
-                    <img className="button-icon" src="assets/circle-with-check-symbol.svg"></img>Submit
+                    <img alt="submit" className="button-icon" src="assets/circle-with-check-symbol.svg"></img>Submit
                 </span>
             </button>   
         </div>
         );
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        createTask: (state) => dispatch(createTask(state)),
     }
 }
 

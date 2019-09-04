@@ -1,6 +1,7 @@
 import { 
     CREATE_TASK, 
     DELETE_TASK, 
+    UPDATE_TASK, 
     REQUEST_TASKS_PENDING,
     REQUEST_TASKS_SUCCESS,
     REQUEST_TASKS_FAILED 
@@ -18,9 +19,15 @@ export const tasks = (state = initialState, action = {}) => {
             return {...state, tasks: [...state.tasks, action.payload]}
         case DELETE_TASK:
             return {...state, tasks: state.tasks.filter(task => {
-                console.log('task', task);
-                return task.taskID != action.payload}
+                return task.taskID !== action.payload}
             )}
+        case UPDATE_TASK:
+            return {...state, tasks: state.tasks.map(task => {
+                if(task.taskID === action.payload.taskID) {
+                    task = action.payload
+                }
+                return task
+            })}
         case REQUEST_TASKS_PENDING: 
             return {...state, isPending: true }
         case REQUEST_TASKS_SUCCESS: 
