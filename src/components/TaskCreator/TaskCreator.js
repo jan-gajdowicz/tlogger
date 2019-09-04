@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { createTask } from '../../actions';
-import './TaskCreator.css';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { createTask } from '../../actions'
+import moment from 'moment'
+import './TaskCreator.css'
   
 const mapDispatchToProps = dispatch => {
     return {
@@ -13,67 +14,91 @@ class TaskCreator extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            taskID: null,
             taskName: '',
             taskTime: '',
-            timer: null, 
-            timerFired: false
-        };
+            timerTime: 0,
+            timerInterval: null, 
+            timerFired: false,
+            creatorStateClass: ''
+        }
         this.createTask = this.createTask.bind(this)
         this.trackTime = this.trackTime.bind(this)
         this.handleInputChange = this.handleInputChange.bind(this)
     }
     handleInputChange(event) {
-        const target = event.target;
-        const value = target.value;
-        const name = target.name;
-    
+        const target = event.target
+        const value = target.value
+        const name = target.name
         this.setState({
             [name]: value
         });
     }
     createTask() {
-        if(this.state.taskName == '' || this.state.taskTime == '') {
+        this.setState({creatorStateClass: ''})
+        if(this.state.taskName === '' || this.state.taskTime === '') {
+            this.setState({creatorStateClass: 'shake'})
             return false
         }
-        this.props.createTask(this.state)
+        this.props.createTask({
+            taskID: Date.now(),
+            taskName: this.state.taskName,
+            taskTime: this.state.taskTime
+        })
+        this.setState({
+            taskName: '',
+            taskTime: '',
+            timerTime: 0
+        })
+    }
+    formatTime(timeInMs) {
+        const duration = moment.duration(timeInMs)
+        const format = (timeUnit) => {
+            return duration[timeUnit]() >= 10 ? duration[timeUnit]() : `0${duration[timeUnit]()}`
+        }
+        return `${format('hours')}:${format('minutes')}:${format('seconds')}`
     }
     trackTime() {
         if(this.state.timerFired) {
-            console.log(timer);
-            clearInterval(timer)
-            this.setState({taskTime: this.state.taskTime});
+            clearInterval(this.state.timerInterval)
+            this.setState({
+                timerInterval: null,
+                timerFired: false
+            })
             return false
         }
-        let counter = 0
-        function timer() {
-            this.setState({
-                taskTime: counter
+        let timeInMs = this.state.timerTime
+        const updateTimer = () => {
+            timeInMs += 1000
+            this.setState({ 
+                taskTime: this.formatTime(timeInMs),
+                timerTime : timeInMs
             })
-            counter += 1000
         }
-        timer = timer.bind(this)
-        setInterval(timer, 1000)
-        this.setState({timerFired: true})
+        this.setState({
+            timerInterval: setInterval(updateTimer, 1000),
+            timerFired: true
+        })
     }
     render() {
         return (
-        <div className="task-creator">
+        <div className={`task-creator ${this.state.creatorStateClass}`}>
             <div>
-                <input type="text" 
+                <input value={this.state.taskName} 
+                    type="text" 
                     name="taskName"  
                     className="creator-input"
                     placeholder="Task Name"
                     onChange={this.handleInputChange}
-                    value={this.state.taskName}
                 />
             </div>
             <div>
-                <input type="number" 
+                <input value={this.state.taskTime}
+                    type="text" 
                     name="taskTime"  
                     className="creator-input"
                     placeholder="Time in ms"
                     onChange={this.handleInputChange}
-                    value={this.state.taskTime}
                 />
             </div>   
             <button onClick={this.trackTime} className="creator-button">Track Time</button>   
