@@ -14,7 +14,7 @@
     margin-right: 10px;
 }
 .creator-button {
-    background: rgb(88, 124, 245);
+    background: rgb(67, 101, 216);
     padding: 10px 20px;
     border: 1px solid rgb(1, 45, 192);
     border-radius: 3px;
@@ -40,12 +40,23 @@
 }
 
 .creator-button.button-main {
-    background: rgb(245, 125, 88);
-    border: 1px solid rgb(192, 61, 1);
+    background: rgb(160, 0, 125);
+    border: 1px solid rgb(107, 0, 84);
 }
 
 .creator-button.button-main:hover {
-    background: rgb(255, 145, 112);
+    background: rgb(190, 2, 149);
+}
+.button-inner {
+  padding-left: 25px;
+  position: relative;
+}
+
+.button-icon {
+  position: absolute;
+  left: 0;
+  top: 1px;
+  height: 14px;
 }
 
 .shake {

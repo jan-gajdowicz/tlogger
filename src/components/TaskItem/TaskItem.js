@@ -6,7 +6,7 @@ class TaskItem extends Component {
         return (
         <div className="task-item">
             <div>{this.props.item.taskName}</div>
-            <div>{this.props.item.taskTime}</div>   
+            <div>{this.props.item.taskTimeFormatted}</div>   
         </div>
         );
     }

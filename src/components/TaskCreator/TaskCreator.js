@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { createTask } from '../../actions'
-import moment from 'moment'
+import { formatTime } from '../../functions'
 import './TaskCreator.css'
   
 const mapDispatchToProps = dispatch => {
@@ -16,7 +16,8 @@ class TaskCreator extends Component {
         this.state = {
             taskID: null,
             taskName: '',
-            taskTime: '',
+            taskTimeInMs: '',
+            taskTimeFormatted: '',
             timerTime: 0,
             timerInterval: null, 
             timerFired: false,
@@ -27,9 +28,15 @@ class TaskCreator extends Component {
         this.handleInputChange = this.handleInputChange.bind(this)
     }
     handleInputChange(event) {
+        event.persist()
         const target = event.target
         const value = target.value
         const name = target.name
+        if(name === 'taskTimeFormatted') {
+            this.setState({
+                taskTimeInMs: value,
+            })
+        }
         this.setState({
             [name]: value
         });
@@ -40,23 +47,19 @@ class TaskCreator extends Component {
             this.setState({creatorStateClass: 'shake'})
             return false
         }
+        const timeFormatted = formatTime(this.state.taskTimeInMs)
         this.props.createTask({
             taskID: Date.now(),
             taskName: this.state.taskName,
-            taskTime: this.state.taskTime
+            taskTimeInMs: this.state.taskTimeInMs,
+            taskTimeFormatted: timeFormatted
         })
         this.setState({
             taskName: '',
-            taskTime: '',
+            taskTimeInMs: '',
+            taskTimeFormatted: '',
             timerTime: 0
         })
-    }
-    formatTime(timeInMs) {
-        const duration = moment.duration(timeInMs)
-        const format = (timeUnit) => {
-            return duration[timeUnit]() >= 10 ? duration[timeUnit]() : `0${duration[timeUnit]()}`
-        }
-        return `${format('hours')}:${format('minutes')}:${format('seconds')}`
     }
     trackTime() {
         if(this.state.timerFired) {
@@ -71,7 +74,8 @@ class TaskCreator extends Component {
         const updateTimer = () => {
             timeInMs += 1000
             this.setState({ 
-                taskTime: this.formatTime(timeInMs),
+                taskTimeInMs: timeInMs,
+                taskTimeFormatted: formatTime(timeInMs),
                 timerTime : timeInMs
             })
         }
@@ -81,6 +85,19 @@ class TaskCreator extends Component {
         })
     }
     render() {
+        const isTimerFired = this.state.timerFired
+        let trackingButtonContent
+        if(isTimerFired) {
+            trackingButtonContent = 
+                <span className="button-inner">
+                    <img className="button-icon" src="assets/pause-button.svg"></img>Pause
+                </span>
+        } else {
+            trackingButtonContent = 
+                <span className="button-inner">
+                    <img className="button-icon" src="assets/play-arrow.svg"></img>Track
+                </span>
+        }
         return (
         <div className={`task-creator ${this.state.creatorStateClass}`}>
             <div>
@@ -93,16 +110,22 @@ class TaskCreator extends Component {
                 />
             </div>
             <div>
-                <input value={this.state.taskTime}
+                <input value={this.state.taskTimeFormatted}
                     type="text" 
-                    name="taskTime"  
+                    name="taskTimeFormatted"  
                     className="creator-input"
-                    placeholder="Time in ms"
+                    placeholder="Duration (hh:mm:ss)"
                     onChange={this.handleInputChange}
                 />
             </div>   
-            <button onClick={this.trackTime} className="creator-button">Track Time</button>   
-            <button onClick={this.createTask} className="creator-button button-main">Submit Task</button>   
+            <button onClick={this.trackTime} className="creator-button">
+                {trackingButtonContent}
+            </button>   
+            <button onClick={this.createTask} className="creator-button button-main">
+                <span className="button-inner">
+                    <img className="button-icon" src="assets/circle-with-check-symbol.svg"></img>Submit
+                </span>
+            </button>   
         </div>
         );
     }
