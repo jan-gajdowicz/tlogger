@@ -1,4 +1,5 @@
 import { 
+    UPDATE_MODAL,
     CREATE_TASK, 
     DELETE_TASK, 
     UPDATE_TASK, 
@@ -9,8 +10,23 @@ import {
 
 const initialState = {
     tasks: [],
+    modal: {
+        modalOpen: false,
+        modalHeader: '',
+        modalContent: '',
+        showButtons: false
+    },
     isPending: false,
     error: ''
+}
+
+export const modal = (state = initialState.modal, action = {}) => {
+    switch(action.type) {
+        case UPDATE_MODAL:
+            return state = action.payload
+        default:
+            return state
+    }
 }
          
 export const tasks = (state = initialState, action = {}) => {
@@ -18,6 +34,7 @@ export const tasks = (state = initialState, action = {}) => {
         case CREATE_TASK:
             return {...state, tasks: [...state.tasks, action.payload]}
         case DELETE_TASK:
+            console.log(action.payload);
             return {...state, tasks: state.tasks.filter(task => {
                 return task.taskID !== action.payload}
             )}

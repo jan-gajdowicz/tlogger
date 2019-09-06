@@ -1,6 +1,7 @@
 import ls from 'local-storage'
 import { 
     API_URL, 
+    UPDATE_MODAL,
     CREATE_TASK, 
     DELETE_TASK, 
     UPDATE_TASK,
@@ -9,14 +10,19 @@ import {
     REQUEST_TASKS_FAILED 
 } from './constants'
 
+export const updateModal = (modal) => ({
+    type: UPDATE_MODAL,
+    payload: modal
+})
+
 export const createTask = (task) => ({
     type: CREATE_TASK,
     payload: task
 })
 
-export const deleteTask = (task) => ({
+export const deleteTask = (taskID) => ({
     type: DELETE_TASK,
-    payload: task
+    payload: taskID
 })
 
 export const updateTask = (task) => ({

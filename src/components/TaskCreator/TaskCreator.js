@@ -4,7 +4,7 @@ import { createTask } from '../../actions'
 import { formatTime } from '../../functions'
 import './TaskCreator.css'
 import moment from 'moment'
-  
+
 class TaskCreator extends Component {
     constructor(props) {
         super(props)
@@ -34,7 +34,8 @@ class TaskCreator extends Component {
             [name]: value
         });
     }
-    createTask = () => {
+    createTask = event => {
+        event.preventDefault()
         this.setState({creatorStateClass: ''})
         if(this.state.taskName === '' || this.state.taskTime === '') {
             this.setState({creatorStateClass: 'shake'})
@@ -42,8 +43,8 @@ class TaskCreator extends Component {
         }
         const timeFormatted = formatTime(this.state.taskTimeInMs)
         this.props.createTask({
-            taskID: `task_${moment()}`,
-            taskCreationTime: moment(),
+            taskID: `task_${Date.now()}`,
+            taskCreationTime: new Date(), 
             taskName: this.state.taskName,
             taskTimeInMs: this.state.taskTimeInMs,
             taskTimeFormatted: timeFormatted
@@ -93,34 +94,36 @@ class TaskCreator extends Component {
                 </span>
         }
         return (
+        <form onSubmit={this.createTask}>
             <div className={`task-creator ${this.state.creatorStateClass}`}>
-            <div>
-                <input value={this.state.taskName} 
-                    type="text" 
-                    name="taskName"  
-                    className="creator-input"
-                    placeholder="Task Name"
-                    onChange={this.handleInputChange}
-                    />
+                <div>
+                    <input value={this.state.taskName} 
+                        type="text" 
+                        name="taskName"  
+                        className="creator-input"
+                        placeholder="Task Name"
+                        onChange={this.handleInputChange}
+                        />
+                </div>
+                <div>
+                    <input value={this.state.taskTimeFormatted}
+                        type="text" 
+                        name="taskTimeFormatted"  
+                        className="creator-input"
+                        placeholder="Duration (hh:mm:ss)"
+                        onChange={this.handleInputChange}
+                        />
+                </div>   
+                <button onClick={this.trackTime} className="creator-button">
+                    {trackingButtonContent}
+                </button>   
+                <button onClick={this.createTask} className="creator-button button-main">
+                    <span className="button-inner">
+                        <img alt="submit" className="button-icon" src="assets/circle-with-check-symbol.svg"></img>Submit
+                    </span>
+                </button>   
             </div>
-            <div>
-                <input value={this.state.taskTimeFormatted}
-                    type="text" 
-                    name="taskTimeFormatted"  
-                    className="creator-input"
-                    placeholder="Duration (hh:mm:ss)"
-                    onChange={this.handleInputChange}
-                />
-            </div>   
-            <button onClick={this.trackTime} className="creator-button">
-                {trackingButtonContent}
-            </button>   
-            <button onClick={this.createTask} className="creator-button button-main">
-                <span className="button-inner">
-                    <img alt="submit" className="button-icon" src="assets/circle-with-check-symbol.svg"></img>Submit
-                </span>
-            </button>   
-        </div>
+        </form>
         );
     }
 }

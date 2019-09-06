@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import TaskList from './components/TaskList/TaskList';
-import './App.css';
+import Modal from './components/Modal/Modal';
+import './App.css'; 
 
 class App extends Component {
   render() {
     return (
-      <TaskList/>
+      <div className="app">
+        <TaskList/>
+        <Modal/>
+      </div>
     );
   }
 }

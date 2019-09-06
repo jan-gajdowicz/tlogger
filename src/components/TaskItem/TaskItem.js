@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './TaskItem.css';
 import { connect } from 'react-redux'
-import { deleteTask, updateTask } from '../../actions'
+import { deleteTask, updateTask, updateModal } from '../../actions'
 import moment from 'moment'
 
 class TaskItem extends Component {
@@ -14,11 +14,15 @@ class TaskItem extends Component {
             taskCreationTime: '',
         }
     }
-    //proptypes!!!
     deleteTask = () => {
-        this.props.deleteTask(this.props.item.taskID)
+        this.props.updateModal({
+            modalOpen: true,
+            modalHeader: 'Please confirm',
+            modalContent: 'Are you positive you want to delete this task?',
+            modalConfirm: { action :this.props.deleteTask, payload: this.props.item.taskID }
+        })
     }
-    updateTask = (event) => {
+    updateTask = () => {
         this.props.updateTask(this.state)
     }
     editTask = (event) => {
@@ -82,6 +86,7 @@ const mapDispatchToProps = dispatch => {
     return {
         deleteTask: (state) => dispatch(deleteTask(state)),
         updateTask: (state) => dispatch(updateTask(state)),
+        updateModal: (state) => dispatch(updateModal(state))
     }
 }
 
